@@ -68,7 +68,6 @@ const part2 = (rawInput: string) => {
   calorieTotalList.sort((a, b) => b - a);
 
   // answer is top 3 summed.
-
   return calorieTotalList[0] + calorieTotalList[1] + calorieTotalList[2];
 };
 
