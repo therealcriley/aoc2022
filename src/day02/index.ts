@@ -31,26 +31,35 @@ const parseInput = (rawInput: string) => {
 };
 
 const rpsDecider = (elfMove: ElfMove, playerMove: PlayerMove): number => {
-  const score = { loss: 0, draw: 1, win: 2 } as const;
+  const outcomeScore = { loss: 0, draw: 3, win: 6 } as const;
+  const moveScore = { rock: 1, paper: 2, scissors: 3 } as const;
 
-  if (playerMove === elfMove) return score.draw;
-  if (playerMove === "scissors" && elfMove === "paper") return score.win;
-  if (playerMove === "scissors" && elfMove === "rock") return score.loss;
-  if (playerMove === "rock" && elfMove === "scissors") return score.win;
-  if (playerMove === "rock" && elfMove === "paper") return score.loss;
-  if (playerMove === "paper" && elfMove === "rock") return score.win;
-  if (playerMove === "paper" && elfMove === "scissors") return score.loss;
+  if (playerMove === elfMove) return outcomeScore.draw + moveScore[playerMove];
+  if (playerMove === "scissors" && elfMove === "paper")
+    return outcomeScore.win + moveScore[playerMove];
+  if (playerMove === "scissors" && elfMove === "rock")
+    return outcomeScore.loss + moveScore[playerMove];
+  if (playerMove === "rock" && elfMove === "scissors")
+    return outcomeScore.win + moveScore[playerMove];
+  if (playerMove === "rock" && elfMove === "paper")
+    return outcomeScore.loss + moveScore[playerMove];
+  if (playerMove === "paper" && elfMove === "rock")
+    return outcomeScore.win + moveScore[playerMove];
+  if (playerMove === "paper" && elfMove === "scissors")
+    return outcomeScore.loss + moveScore[playerMove];
 
   throw new Error("Invalid RPS");
 };
 
+// fix: rps is just the score, not the score * move.
+// We need to multiply the result by the playerMove score value too
 const part1 = (rawInput: string) => {
   const rounds = parseInput(rawInput);
 
   const score = rounds.reduce((acc, [elfMove, playerMove]) => {
-    const playerMoveValue = moveListValueMap[playerMove];
     const roundScore = rpsDecider(elfMove, playerMove);
-    return acc + playerMoveValue + roundScore;
+    // console.log(`round: ${elfMove} vs ${playerMove} = ${roundScore}`);
+    return acc + roundScore;
   }, 0);
 
   return score;
