@@ -1,6 +1,16 @@
 import run from "aocrunner";
 
-const parseInput = (rawInput: string) => rawInput.split(/\r?\n/);
+const parseInput = (rawInput: string) => {
+  return rawInput.split(/\r?\n/).map((line) => {
+    const [elfOneAssignment, elfTwoAssignment] = line
+      .split(",")
+      .map((assignment) => {
+        const [start, stop] = assignment.split("-").map((num) => parseInt(num));
+        return { start, stop } as Assignment;
+      });
+    return [elfOneAssignment, elfTwoAssignment] as AssignmentPair;
+  });
+};
 
 // 21-82,22-81
 // 46-47,21-47
@@ -17,16 +27,7 @@ type Assignment = { start: number; stop: number };
 type AssignmentPair = [Assignment, Assignment];
 
 const part1 = (rawInput: string) => {
-  const input = parseInput(rawInput);
-  const assignmentPairs = input.map((line) => {
-    const [elfOneAssignment, elfTwoAssignment] = line
-      .split(",")
-      .map((assignment) => {
-        const [start, stop] = assignment.split("-").map((num) => parseInt(num));
-        return { start, stop } as Assignment;
-      });
-    return [elfOneAssignment, elfTwoAssignment] as AssignmentPair;
-  });
+  const assignmentPairs = parseInput(rawInput);
 
   let neithers = 0;
   let fullyContained = 0; // 1 elf fully contains the other
