@@ -59,16 +59,27 @@ const part2 = (rawInput: string) => {
 
   for (const assignmentPair of assignmentPairs) {
     const [elfOneAssignment, elfTwoAssignment] = assignmentPair;
-    const elfOneArray = [...Array(elfOneAssignment.stop).keys()].map(
-      (i) => i + elfOneAssignment.start,
+    const elfOneArray = [...Array(elfOneAssignment.stop + 1).keys()].slice(
+      elfOneAssignment.start,
+      elfOneAssignment.stop + 1, // +1 because slice is exclusive
     );
-    const elfTwoArray = [...Array(elfTwoAssignment.stop).keys()].map(
-      (i) => i + elfTwoAssignment.start,
+    const elfTwoArray = [...Array(elfTwoAssignment.stop + 1).keys()].slice(
+      elfTwoAssignment.start,
+      elfTwoAssignment.stop + 1, // +1 because slice is exclusive
     );
+    // console.log(
+    //   "elfOneAssignment",
+    //   elfOneAssignment,
+    //   "elfOneArray",
+    //   elfOneArray,
+    // );
     const intersection = elfOneArray.filter((letter) =>
       elfTwoArray.includes(letter),
     );
-    if (intersection.length > 0) intersected++;
+    // console.log("intersection", intersection);
+    if (intersection.length > 0) {
+      intersected++;
+    }
   }
 
   return intersected;

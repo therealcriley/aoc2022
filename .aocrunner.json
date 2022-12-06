@@ -58,15 +58,15 @@
         "attempts": [
           "303"
         ],
-        "time": 2.5162
+        "time": 2.7505
       },
       "part2": {
-        "solved": false,
-        "result": "987",
+        "solved": true,
+        "result": "914",
         "attempts": [
           "987"
         ],
-        "time": 8.614
+        "time": 5.8842
       }
     },
     {
