@@ -53,9 +53,25 @@ const part1 = (rawInput: string) => {
 };
 
 const part2 = (rawInput: string) => {
-  const input = parseInput(rawInput);
+  const assignmentPairs = parseInput(rawInput);
 
-  return;
+  let intersected = 0;
+
+  for (const assignmentPair of assignmentPairs) {
+    const [elfOneAssignment, elfTwoAssignment] = assignmentPair;
+    const elfOneArray = [...Array(elfOneAssignment.stop).keys()].map(
+      (i) => i + elfOneAssignment.start,
+    );
+    const elfTwoArray = [...Array(elfTwoAssignment.stop).keys()].map(
+      (i) => i + elfTwoAssignment.start,
+    );
+    const intersection = elfOneArray.filter((letter) =>
+      elfTwoArray.includes(letter),
+    );
+    if (intersection.length > 0) intersected++;
+  }
+
+  return intersected;
 };
 
 run({
