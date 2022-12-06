@@ -12,25 +12,43 @@ const parseInput = (rawInput: string) => rawInput.split(/\r?\n/);
 // [elfOneAssignment, elfTwoAssignment]
 type Start = number;
 type Stop = number;
-type Assignment = [Start, Stop];
+// type Assignment = [Start, Stop];
+type Assignment = { start: number; stop: number };
 type AssignmentPair = [Assignment, Assignment];
 
 const part1 = (rawInput: string) => {
-  const input = parseInput(rawInput).slice(0, 5);
+  const input = parseInput(rawInput);
   const assignmentPairs = input.map((line) => {
     const [elfOneAssignment, elfTwoAssignment] = line
       .split(",")
       .map((assignment) => {
         const [start, stop] = assignment.split("-").map((num) => parseInt(num));
-        return [start, stop] as Assignment;
+        return { start, stop } as Assignment;
       });
     return [elfOneAssignment, elfTwoAssignment] as AssignmentPair;
   });
 
-  console.log("test", assignmentPairs[0]);
-  for (const assignment of assignmentPairs) {
-    console.log(assignment);
+  let neithers = 0;
+  let fullyContained = 0; // 1 elf fully contains the other
+
+  for (const assignmentPair of assignmentPairs) {
+    const [elfOneAssignment, elfTwoAssignment] = assignmentPair;
+    if (
+      elfOneAssignment.start <= elfTwoAssignment.start &&
+      elfOneAssignment.stop >= elfTwoAssignment.stop
+    ) {
+      fullyContained++;
+    } else if (
+      elfTwoAssignment.start <= elfOneAssignment.start &&
+      elfTwoAssignment.stop >= elfOneAssignment.stop
+    ) {
+      fullyContained++;
+    } else {
+      neithers++;
+    }
   }
+  console.log("neithers", neithers);
+  return fullyContained;
 };
 
 const part2 = (rawInput: string) => {
